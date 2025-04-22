@@ -12,6 +12,19 @@ router.post('/submit', async (req, res) => {
             return res.status(400).json({ error: 'Invalid or expired token' });
         }
 
+        // Validate responses
+        if (responses.length !== course.questions.length) {
+            return res.status(400).json({ error: 'Invalid number of responses' });
+        }
+
+        for (let i = 0; i < course.questions.length; i++) {
+            const question = course.questions[i];
+            const response = responses[i];
+            if (question.type === 'option' && !question.options.includes(response)) {
+                return res.status(400).json({ error: `Invalid response for question: ${question.text}` });
+            }
+        }
+
         const feedback = new Feedback({ courseId, studentId, responses });
         await feedback.save();
         res.status(201).json({ message: 'Feedback submitted successfully' });
