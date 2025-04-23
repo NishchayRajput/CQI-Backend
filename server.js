@@ -10,6 +10,14 @@ dotenv.config();
 const app = express();
 app.use(bodyParser.json());
 
+app.use(bodyParser.urlencoded({ extended: true }));
+const cors = require('cors');
+app.use(cors({
+    origin: '*', // Replace with your frontend URL
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+}));
+
 // Session setup
 app.use(session({
     secret: process.env.SECRET_KEY, // Replace with a strong secret key
