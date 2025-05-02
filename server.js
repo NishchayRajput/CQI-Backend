@@ -36,7 +36,9 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 app.use('/auth', require('./routes/auth')); // Add auth route
 app.use('/admin', require('./routes/admin'));
 app.use('/feedback', require('./routes/feedback'));
+app.use('/course', require('./routes/course'));
 app.use('/professor', require('./routes/professor'));
+app.use('/question', require('./routes/question'));
 
 // Start server
 const PORT = process.env.PORT || 5000;

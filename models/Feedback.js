@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 const feedbackSchema = new mongoose.Schema({
     courseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Course', required: true },
-    studentId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     responses: { type: Array, required: true },
     submittedAt: { type: Date, default: Date.now }
 });
