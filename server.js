@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const cors = require('cors');
 app.use(cors({
-    origin: 'https://8lvmrdg5-3000.inc1.devtunnels.ms', // Replace with your frontend URL
+    origin: 'http://localhost:3000', // Replace with your frontend URL
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
