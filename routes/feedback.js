@@ -1,34 +1,34 @@
 const express = require('express');
 const router = express.Router();
 const Course = require('../models/Course');
+const Session = require('../models/Session');
 const Feedback = require('../models/Feedback');
 
 // Submit feedback
 router.post('/submit', async (req, res) => {
-    const { courseId, token, studentId, responses } = req.body;
+    const { courseId, token, responses } = req.body;
+    console.log(courseId, token, responses);
     try {
+        const session = await Session.findById(token);
+        console.log(session);
+        if (!session) {
+            return res.status(400).json({ error: 'Invalid session token' });
+        }
         const course = await Course.findById(courseId);
-        if (!course || course.feedbackToken !== token || new Date() > course.tokenExpiry) {
-            return res.status(400).json({ error: 'Invalid or expired token' });
+        console.log(course);
+        if (!course) {
+            return res.status(400).json({ error: 'Invalid course ID' });
         }
+       
+        
+        
 
-        // Validate responses
-        if (responses.length !== course.questions.length) {
-            return res.status(400).json({ error: 'Invalid number of responses' });
-        }
-
-        for (let i = 0; i < course.questions.length; i++) {
-            const question = course.questions[i];
-            const response = responses[i];
-            if (question.type === 'option' && !question.options.includes(response)) {
-                return res.status(400).json({ error: `Invalid response for question: ${question.text}` });
-            }
-        }
-
-        const feedback = new Feedback({ courseId, studentId, responses });
+        
+        const feedback = new Feedback({ courseId, responses });
         await feedback.save();
         res.status(201).json({ message: 'Feedback submitted successfully' });
     } catch (err) {
+        console.error(err);
         res.status(500).json({ error: 'Error submitting feedback' });
     }
 });

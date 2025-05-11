@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const cors = require('cors');
 app.use(cors({
-    origin: '*', // Replace with your frontend URL
+    origin: 'https://8lvmrdg5-3000.inc1.devtunnels.ms', // Replace with your frontend URL
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
 }));
@@ -39,6 +39,7 @@ app.use('/feedback', require('./routes/feedback'));
 app.use('/course', require('./routes/course'));
 app.use('/professor', require('./routes/professor'));
 app.use('/question', require('./routes/question'));
+app.use('/session', require('./routes/session')); // Add session route
 
 // Start server
 const PORT = process.env.PORT || 5000;
