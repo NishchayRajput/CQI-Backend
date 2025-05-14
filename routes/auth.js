@@ -45,6 +45,10 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ error: "Invalid username or password" });
     }
 
+    if (!user.verify) {
+      return res.status(403).json({ error: "User is not verified" });
+    }
+
     // Save user info in session
     req.session.user = {
       id: user._id,
@@ -74,6 +78,7 @@ router.post("/logout", (req, res) => {
 
 // Check if logged in
 router.get("/check", (req, res) => {
+  console.log(req);
   if (req.session.user) {
     res.status(200).json({ loggedIn: true, user: req.session.user });
   } else {

@@ -158,4 +158,28 @@ router.post('/generate-token', async (req, res) => {
     }
 });
 
+// Approve a professor
+router.put('/approve-user/:userId', async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        // Find the user by ID
+        const user = await User.findById(userId);
+
+        // Check if the user exists and is a professor
+        if (!user || user.role !== 'professor') {
+            return res.status(400).json({ error: 'User not found or not a professor' });
+        }
+
+        // Approve the user
+        user.verify = true;
+        await user.save();
+
+        res.status(200).json({ message: 'Professor approved successfully', user });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error approving professor' });
+    }
+});
+
 module.exports = router;

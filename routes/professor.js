@@ -10,7 +10,7 @@ const User = require('../models/User');
 router.get('/list', async (req, res) => {
     try {
         // Fetch all users with the role of 'professor'
-        const professors = await User.find({ role: 'professor' }).select('username Name email');
+        const professors = await User.find({ role: 'professor', verify: 'true' }).select('username Name email');
         res.status(200).json(professors);
     } catch (err) {
         console.error(err);

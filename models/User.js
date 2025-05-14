@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     role: { type: String, enum: ['admin', 'professor'], required: true },
     email: { type: String, required: true, unique: true },
+    verify: { type: Boolean, default: false } // Field to track admin approval
 });
 
 // Hash password before saving
