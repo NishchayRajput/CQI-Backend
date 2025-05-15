@@ -22,7 +22,8 @@ router.post("/signup", async (req, res) => {
       return res.status(400).json({ error: "Username already exists" });
     }
 
-    const user = new User({ username, Name, password, role, email });
+    const hashedPassword = await bcryptjs.hash(password, 10); // Ensure password is hashed
+    const user = new User({ username, Name, password: hashedPassword, role, email });
     await user.save();
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {
@@ -35,9 +36,7 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   const username = req.headers["username"];
   const password = req.headers["password"];
-  console.log(req.headers);
-  console.log("Login attempt with username:", username);
-  console.log("Login attempt with password:", password);
+  
   try {
     const user = await User.findOne({ username });
 
@@ -57,7 +56,7 @@ router.post("/login", async (req, res) => {
       email: user.email,
       username: user.username,
     };
-    res.status(200).json({ message: "Login successful" });
+    res.status(200).json({ message: "Login successful", user: req.session.user });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Error logging in" });
@@ -78,8 +77,10 @@ router.post("/logout", (req, res) => {
 
 // Check if logged in
 router.get("/check", (req, res) => {
-  console.log(req);
-  if (req.session.user) {
+  // console.log(req);
+  console.log(req.session);
+  console.log(req.session.user);
+  if (req.session && req.session.user) {
     res.status(200).json({ loggedIn: true, user: req.session.user });
   } else {
     res.status(401).json({ loggedIn: false });

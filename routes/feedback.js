@@ -63,7 +63,6 @@ router.get("/list/:courseId", async (req, res) => {
     res.status(500).json({ error: "Error fetching feedback responses" });
   }
 });
-// Get feedback for a specific course and session
 
 // Get an individual feedback response by formResponseId
 router.get("/list/individual/:formResponseId", async (req, res) => {
